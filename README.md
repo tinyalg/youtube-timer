@@ -21,7 +21,7 @@ YouTube、Netflix、Amazon Prime Videoを見ている時間を自動で計測し
 
 Mozillaによる署名済みの正規アドオンとしてインストールできます。自動更新にも対応しています。
 
-### [👉 インストールはこちら (v0.1)](https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.1.xpi)
+### [👉 インストールはこちら (v0.2)](https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.2.xpi)
 
 **手順:**
 

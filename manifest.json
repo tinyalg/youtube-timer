@@ -1,7 +1,10 @@
 {
   "manifest_version": 3,
   "name": "YouTube Timer",
-  "version": "0.1",
+  "version": "0.2",
+  "description": "YouTube等の視聴時間を計測します。",
+  "author": "Tinyalg Systems",
+  "homepage_url": "https://tinyalg.github.io/youtube-timer/",
   "permissions": [
     "tabs",
     "storage"
