@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Timer",
+  "version": "0.1",
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "YouTube Time",
+    "default_popup": "popup.html"  
+  }
+}

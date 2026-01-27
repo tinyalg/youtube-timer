@@ -1,0 +1,156 @@
+// background.js
+
+// ▼▼▼ ここに監視したいURLの一部をリスト化します ▼▼▼
+const TARGET_URLS = [
+  "youtube.com",            // YouTube (全般)
+  "netflix.com/watch",      // Netflix (再生画面)
+  "netflix.com/browse",     // Netflix (動画一覧)
+  "amazon.co.jp/gp/video",  // Amazon Prime Video (日本)
+  "primevideo.com"          // Prime Video (専用サイト)
+];
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+
+let isPopupOpen = false;        // ポップアップが開いているかを管理する変数
+let lastCheckTime = Date.now(); // 前回のチェック時刻を記録しておく変数
+let accumulatedMs = 0;          // 端数のミリ秒を貯めておく「貯金箱」
+
+// ポップアップからの接続を監視
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name === "popup") {
+    isPopupOpen = true; // 接続されたら「開いている」
+    port.onDisconnect.addListener(() => {
+      isPopupOpen = false; // 切断されたら「閉じた」
+    });
+  }
+});
+
+setInterval(async () => {
+  const now = Date.now();
+  const diffMs = now - lastCheckTime; 
+  const diffSec = Math.round(diffMs / 1000); 
+  
+  lastCheckTime = now;
+
+  // ★デバッグ用: 実際に何ミリ秒かかったかをログに出す
+  // (拡張機能の管理画面 -> ビューを検証: background page の Consoleで見れます)
+  if (diffMs > 1100 || diffMs < 900) {
+    console.log(`Time drift detected: ${diffMs}ms (${diffSec}s)`);
+  }
+
+  // 1. スリープ対策: いきなり「60秒」以上経過していたら、それは計測ラグではなく「スリープ」とみなす
+  // その場合は、強制的に1秒(1000ms)扱いにして、寝ていた時間をチャラにする
+  const validDiffMs = (diffMs > 0 && diffMs < 60000) ? diffMs : 1000;
+
+  // 2. 経過時間を「貯金箱」に入れる
+  accumulatedMs += validDiffMs;
+
+  // 3. 貯金箱に「1000ms（1秒）」以上たまっているか？
+  if (accumulatedMs < 1000) {
+    // まだ1秒に満たないので、何もしない（次のループで合算する）
+    return;
+  }
+
+  // 4. たまっている分を「秒」に換算して取り出す
+  const secondsToAdd = Math.floor(accumulatedMs / 1000);
+  
+  // 5. 使った分を貯金箱から引く（端数は残る！）
+  accumulatedMs -= (secondsToAdd * 1000);
+
+  try {
+    const lastFocusedWindow = await chrome.windows.getLastFocused().catch(() => null);
+    const isWindowFocused = lastFocusedWindow && lastFocusedWindow.focused;
+    const focusedWindowId = lastFocusedWindow ? lastFocusedWindow.id : null;
+
+    // 2. 開いている「全てのタブ」を取得してチェックする
+    const tabs = await chrome.tabs.query({});
+    let isWatching = false;
+
+    for (const tab of tabs) {
+      // ターゲットのURL（YouTube等）でなければスキップ
+      if (!tab.url || !TARGET_URLS.some(url => tab.url.includes(url))) {
+        continue;
+      }
+
+      // 条件A: 音が出ている (audibleがtrue)
+      // → 裏で再生していてもここで「視聴中」と判定される
+      if (tab.audible) {
+        isWatching = true;
+        break; // 1つでも見つかればOK
+      }
+
+      // 条件B: アクティブなタブで、かつウィンドウを見ている (フォーカスあり)
+      // → 音が出ていなくても（字幕で見ていても）見ている状態
+      if (tab.active && isWindowFocused && tab.windowId === focusedWindowId) {
+        isWatching = true;
+        break;
+      }
+
+      // 条件C: ポップアップを開いて履歴を見ている
+      if (isPopupOpen && tab.active && tab.windowId === focusedWindowId) {
+        isWatching = true;
+        break;
+      }
+    }
+
+    if (isWatching) {
+        const todayStr = new Date().toLocaleDateString();
+        
+        // ストレージから履歴全体を取得
+        const data = await chrome.storage.local.get("history");
+        const history = data.history || {}; // なければ空のオブジェクト
+        
+        // 今日の分をカウントアップ (なければ0からスタート)
+        const currentSeconds = (history[todayStr] || 0) + secondsToAdd;
+
+      // 4. ストレージに保存（これが大事！）
+        history[todayStr] = currentSeconds;
+        await chrome.storage.local.set({ history: history });
+
+      // 5. バッジ（アイコン上の数字）を更新
+      updateBadge(currentSeconds);
+    } else {
+      // 見ていない時は、貯金箱を空にしてリセット
+      accumulatedMs = 0; 
+      
+      chrome.action.setBadgeBackgroundColor({ color: "#CCCCCC" });
+    }
+
+  } catch (error) {
+    // エラーが出ても止まらないように無視（あるいはコンソール出力）
+    console.log(error);
+  }
+}, 1000);
+
+function updateBadge(seconds) {
+  // 60秒未満なら「秒 (s)」を表示
+  if (seconds < 60) {
+    chrome.action.setBadgeText({ text: seconds + "s" });
+  } 
+  // 1時間未満なら「分 (m)」を表示
+  else if (seconds < 3600) {
+    const minutes = Math.floor(seconds / 60);
+    chrome.action.setBadgeText({ text: minutes + "m" });
+  } 
+  // 1時間以上なら「時間 (h)」を表示
+  else {
+    const hours = Math.floor(seconds / 3600);
+    const remMinutes = Math.floor((seconds % 3600) / 60);
+    
+    // ★変更: 時間を16進数に変換して大文字にする (10->A, 11->B ... 15->F)
+    const hoursHex = hours.toString(16).toUpperCase();
+    
+    // "Ah23" (10時間23分) のように4文字に収める
+    // 16時間(10h)以上になると5文字になるが、それは許容する
+    const text = `${hoursHex}:${String(remMinutes).padStart(2, '0')}`;
+    
+    chrome.action.setBadgeText({ text: text });
+  }
+
+  // ★変更: 真っ青(#0000FF)や真っ赤(#FF0000)ではなく、
+  // 視認性が高くYouTubeらしい「濃い赤(#CC0000)」に変更しました。
+  chrome.action.setBadgeBackgroundColor({ color: "#CC0000" });
+  
+  if (chrome.action.setBadgeTextColor) {
+    chrome.action.setBadgeTextColor({ color: "#FFFFFF" });
+  }}
