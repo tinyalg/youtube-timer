@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "youtube-timer@tinyalg-firefox-addons": {
+      "updates": [
+        {
+          "version": "0.1",
+          "update_link": "https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.1.xpi"
+        }
+      ]
+    }
+  }
+}
