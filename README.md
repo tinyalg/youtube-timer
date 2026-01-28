@@ -1,58 +1,78 @@
-# YouTube Timer 🕒
+# Timer for YouTube & Streaming 🕒
 
-YouTube、Netflix、Amazon Prime Videoを見ている時間を自動で計測し、使いすぎを防ぐためのシンプルなブラウザ拡張機能です。
+A smart browser extension that tracks your viewing time on video streaming sites to help prevent binge-watching.
 
-「気づいたら動画サイトで1日が終わっていた…」という経験はありませんか？
-このツールは、視聴時間をブラウザのツールバーにリアルタイムで表示することで、時間の感覚を取り戻す手助けをします。
+Ever realized you've spent the whole day watching videos?
+This tool helps you regain control of your time by displaying your daily viewing duration right on your browser toolbar in real-time.
 
-## ✨ 特徴
+![Active Timer Badge](images/youtube-timer-active.png)
 
-* **マルチサイト対応:** YouTube (Shorts含む), Netflix, Amazon Prime Videoに対応。
+## ✨ Key Features
 
-* **スマート計測:** 動画サイトを開いていても、別ウィンドウで作業している時やPCがスリープ中の時はカウントしません。
+* **Real-time Badge Display:**
+  Shows today's total viewing time on the icon **(e.g., "45s", "59m", "1.5h")**.
 
-* **バッジ表示:** 今日の合計時間をアイコン上に「1:23」（1時間23分）のように表示します。
+  * **Active Mode (Red):** Lights up when you are watching a video.
 
-* **履歴管理:** ポップアップ画面で過去の視聴履歴を確認したり、CSVでダウンロードしたりできます。
+  * **Inactive Mode (Gray):** Dims when you are not watching or the window is in the background.
 
-* **プライバシー重視:** データはすべてあなたのPC内（ローカルストレージ）にのみ保存されます。外部サーバーへの送信は一切行いません。
+* **Detailed Tooltip:**
+  Hover over the icon to see the exact time down to the **second** (e.g., "Today: 1h 23m 45s").
 
-## 🦊 Firefoxでのインストール
+* **Fully Customizable Sites:**
+  By default, it supports YouTube, Netflix, and Amazon Prime Video.
+  **You can add any other video site you want to track** via the **Options / Preferences** page!
 
-Mozillaによる署名済みの正規アドオンとしてインストールできます。自動更新にも対応しています。
+  ![Preferences Page](images/youtube-timer-preferences.png)
 
-### [👉 インストールはこちら (v0.4)](https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.4.xpi)
+* **Smart Tracking:**
+  It automatically stops counting when:
 
-**手順:**
+  * The video is paused or no audio is playing.
 
-1. 上記のリンクをクリックしてください。
+  * You switch to another tab or window.
 
-2. ブラウザ上部に許可を求めるバーが出たら「続行」をクリックします。
+  * Your PC goes to sleep.
 
-3. 「YouTube Timer を追加しますか？」と聞かれたら「追加」をクリックします。
+* **History & CSV Export:**
+  Click the icon to view your past viewing history in a popup. You can also download the data as a CSV file for your own analysis.
 
-4. インストール完了です！ツールバーにアイコンが表示されます（表示されない場合はパズルピース🧩アイコンからピン留めしてください）。
+  ![History Popup](images/youtube-timer-popup.png)
 
-## 🌏 Chrome / Edgeでの使い方
+## 🦊 Installation for Firefox
 
-現在はChromeウェブストアでは公開していませんが、以下の手順で手動インストール（開発者モード）が可能です。
+You can install it as a signed add-on from the official link below. It supports automatic updates.
 
-1. [**GitHubのリポジトリページ**](https://github.com/tinyalg/youtube-timer) にアクセスします。
+### [👉 Install v0.4 (Signed)](https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.4.xpi)
 
-2. ページ右上の緑色の **[Code]** ボタン > **[Download ZIP]** からソースコードをダウンロードし、解凍します。
+**Steps:**
 
-3. Chromeの拡張機能管理画面 (`chrome://extensions/`) を開きます。
+1. Click the link above.
 
-4. 右上の **「デベロッパーモード」** をONにします。
+2. Click "Continue to Installation" when prompted.
 
-5. **「パッケージ化されていない拡張機能を読み込む」** をクリックし、解凍したフォルダを選択します。
+3. Click "Add" to install.
 
-## 🛡 データとプライバシー
+## 🌏 Installation for Chrome / Edge
 
-この拡張機能は、ユーザーのプライバシーを最優先に設計されています。
+Currently, this extension is not available on the Chrome Web Store. You can install it manually (Developer Mode).
 
-* **データ保存:** 視聴記録はブラウザの `chrome.storage.local` 機能を使って、お客様の端末内にのみ保存されます。
+1. Go to the [**GitHub Repository**](https://github.com/tinyalg/youtube-timer).
 
-* **外部通信:** 解析ツール（Google Analytics等）や広告配信サーバーへの接続は一切行いません。
+2. Click the green **[Code]** button > **[Download ZIP]** and extract the file.
 
-* **権限:** `tabs` (URLチェック用), `storage` (データ保存用), `windows` (フォーカス判定用) の権限のみを使用します。
+3. Open `chrome://extensions/` in your browser.
+
+4. Enable **"Developer mode"** at the top right.
+
+5. Click **"Load unpacked"** and select the extracted folder.
+
+## 🛡 Data & Privacy
+
+This extension is designed with user privacy as the top priority.
+
+* **Local Storage Only:** All viewing records are stored locally on your device (`chrome.storage.local`).
+
+* **No External Tracking:** No data is ever sent to external servers or analytics tools.
+
+* **Permissions:** Uses only the minimum necessary permissions: `tabs` (to check URLs) and `storage` (to save history).

@@ -3,9 +3,9 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
-  "version": "0.4",
+  "version": "0.5",
   "author": "Tinyalg Systems",
-  "homepage_url": "https://tinyalg.github.io/youtube-timer/",
+  "homepage_url": "https://github.com/tinyalg/youtube-timer",
   "permissions": [
     "tabs",
     "storage"
