@@ -3,6 +3,10 @@
     "youtube-timer-firefox-addons@tinyalg.be": {
       "updates": [
         {
+          "version": "0.3",
+          "update_link": "https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.3.xpi"
+        },
+        {
           "version": "0.2",
           "update_link": "https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.2.xpi"
         },
