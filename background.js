@@ -113,6 +113,7 @@ setInterval(async () => {
       // 見ていない時は、貯金箱を空にしてリセット
       accumulatedMs = 0; 
       
+      // 非アクティブ時は薄いグレーにして目立たなくする
       chrome.action.setBadgeBackgroundColor({ color: "#CCCCCC" });
     }
 
@@ -123,34 +124,49 @@ setInterval(async () => {
 }, 1000);
 
 function updateBadge(seconds) {
-  // 60秒未満なら「秒 (s)」を表示
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remSeconds = seconds % 60;
+
+  // 1. ツールチップ（マウスホバー時）には詳細な時間を表示
+  // 例: "今日の視聴時間: 1時間 23分 45秒"
+  const tooltipText = `今日の視聴時間: ${hours}時間 ${minutes}分 ${remSeconds}秒`;
+  chrome.action.setTitle({ title: tooltipText });
+
+  // 2. バッジ表示（パッと見の目安）
+  let text = "";
+
   if (seconds < 60) {
-    chrome.action.setBadgeText({ text: seconds + "s" });
+    // 60秒未満: "45s"
+    text = seconds + "s";
   } 
-  // 1時間未満なら「分 (m)」を表示
   else if (seconds < 3600) {
-    const minutes = Math.floor(seconds / 60);
-    chrome.action.setBadgeText({ text: minutes + "m" });
+    // 1時間未満: "30m"
+    text = minutes + "m";
   } 
-  // 1時間以上なら「時間 (h)」を表示
   else {
-    const hours = Math.floor(seconds / 3600);
-    const remMinutes = Math.floor((seconds % 3600) / 60);
+    // 1時間以上: 30分刻みで表示 (1.0h, 1.5h, 2.0h...)
     
-    // ★変更: 時間を16進数に変換して大文字にする (10->A, 11->B ... 15->F)
-    const hoursHex = hours.toString(16).toUpperCase();
-    
-    // "Ah23" (10時間23分) のように4文字に収める
-    // 16時間(10h)以上になると5文字になるが、それは許容する
-    const text = `${hoursHex}:${String(remMinutes).padStart(2, '0')}`;
-    
-    chrome.action.setBadgeText({ text: text });
+    const hoursFloat = seconds / 3600;
+    // 0.5単位で切り捨て (例: 1時間29分->1.0h, 1時間30分->1.5h)
+    const roundedHours = Math.floor(hoursFloat * 2) / 2;
+
+    if (roundedHours < 10) {
+      // 10時間未満: "1.0h", "1.5h" (4文字)
+      text = roundedHours.toFixed(1) + "h";
+    } else {
+      // 10時間以上: "10h", "11h" (整数表示)
+      // "10.5h" は5文字になり表示しきれないため、整数部だけ表示
+      text = Math.floor(roundedHours) + "h";
+    }
   }
 
-  // ★変更: 真っ青(#0000FF)や真っ赤(#FF0000)ではなく、
-  // 視認性が高くYouTubeらしい「濃い赤(#CC0000)」に変更しました。
+  chrome.action.setBadgeText({ text: text });
+
+    // カラー設定（YouTubeレッド背景 × 黄色文字）
   chrome.action.setBadgeBackgroundColor({ color: "#CC0000" });
   
   if (chrome.action.setBadgeTextColor) {
-    chrome.action.setBadgeTextColor({ color: "#FFFFFF" });
-  }}
+    chrome.action.setBadgeTextColor({ color: "#FFFF00" });
+  }
+}
