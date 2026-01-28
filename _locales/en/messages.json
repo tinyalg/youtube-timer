@@ -1,0 +1,26 @@
+{
+  "appName": { "message": "Timer for YouTube & Streaming" },
+  "appDesc": { "message": "Track your time on YouTube, Netflix, and Prime Video to prevent binge-watching." },
+  
+  "historyTitle": { "message": "Watch History" },
+  "downloadCsv": { "message": "Export CSV" },
+  "aboutApp": { "message": "About This App" },
+  
+  "settingsTitle": { "message": "Monitored Sites" },
+  "placeholderUrl": { "message": "e.g. hulu.com (part of URL)" },
+  "addBtn": { "message": "Add" },
+  "deleteBtn": { "message": "Delete" },
+  "resetBtn": { "message": "Reset to Default" },
+  "resetConfirm": { "message": "Reset to default settings (YouTube, Netflix, Prime)? This cannot be undone." },
+  "noteAutoSave": { "message": "* Settings are saved automatically." },
+  "errorDuplicate": { "message": "This URL is already in the list." },
+  
+  "tooltipText": {
+    "message": "Today: $1h $2m $3s",
+    "placeholders": {
+      "1": { "content": "$1" },
+      "2": { "content": "$2" },
+      "3": { "content": "$3" }
+    }
+  }
+}

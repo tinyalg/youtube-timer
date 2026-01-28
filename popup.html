@@ -38,13 +38,16 @@
     th, td { text-align: left; padding: 5px; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
     td:last-child { text-align: right; font-weight: bold; }
     .today { color: blue; background-color: #f0f8ff; } /* 今日の行を目立たせる */
+    .footer { margin-top: 10px; text-align: right; font-size: 11px; color: #666; }
+    .footer a { color: #666; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; color: #0000FF; }
   </style>
 </head>
 <body>
   
   <div class="header">
-  <h2>視聴履歴</h2>
-    <button id="downloadBtn">CSV出力</button>
+    <h2 id="historyTitle"></h2>
+    <button id="downloadBtn"></button>
   </div>
   
   <div class="table-container">
@@ -53,6 +56,9 @@
     </table>
   </div>
 
+  <div class="footer">
+    <a href="https://tinyalg.github.io/youtube-timer/" target="_blank" id="aboutApp"></a>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>

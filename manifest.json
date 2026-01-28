@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "YouTube Timer",
-  "version": "0.3",
-  "description": "YouTube等の視聴時間を計測します。",
+  "name": "__MSG_appName__",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
+  "version": "0.4",
   "author": "Tinyalg Systems",
   "homepage_url": "https://tinyalg.github.io/youtube-timer/",
   "permissions": [
@@ -13,7 +14,11 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "YouTube Time",
+    "default_title": "__MSG_appName__",
     "default_popup": "popup.html"  
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
   }
 }

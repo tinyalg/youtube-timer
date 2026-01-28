@@ -5,6 +5,8 @@
 // バックグラウンドに接続して「開いてるよ」と伝える
 chrome.runtime.connect({ name: "popup" });
 document.addEventListener('DOMContentLoaded', async () => {
+  localize(); // 言語セット
+
   const table = document.getElementById('historyTable');
   const downloadBtn = document.getElementById('downloadBtn');
   
@@ -42,14 +44,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // CSVダウンロード処理
   downloadBtn.addEventListener('click', () => {
-    // 1. CSVの中身を作る
-    let csvContent = "日付,秒数,時間表示\n"; // 1行目は見出し
-    
+    let csvContent = "Date,Seconds,Formatted\n"; // CSVヘッダは英語共通でOK
     dates.forEach(date => {
-      const seconds = history[date];
-      const timeStr = formatTime(seconds);
-      // Excelで文字化けしないように少し工夫が必要ですが、まずはシンプルに
-      csvContent += `${date},${seconds},${timeStr}\n`;
+      csvContent += `${date},${history[date]},${formatTime(history[date])}\n`;
     });
 
     // 2. ファイルとしてダウンロードさせる（BOM付きで文字化け防止）
@@ -65,6 +62,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     URL.revokeObjectURL(url);
   });
 });
+
+function localize() {
+  document.getElementById('historyTitle').textContent = chrome.i18n.getMessage("historyTitle");
+  document.getElementById('downloadBtn').textContent = chrome.i18n.getMessage("downloadCsv");
+  document.getElementById('aboutApp').textContent = chrome.i18n.getMessage("aboutApp");
+}
 
 function formatTime(seconds) {
   const h = Math.floor(seconds / 3600);

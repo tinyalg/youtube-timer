@@ -1,7 +1,7 @@
 // background.js
 
 // ▼▼▼ ここに監視したいURLの一部をリスト化します ▼▼▼
-const TARGET_URLS = [
+const DEFAULT_URLS = [
   "youtube.com",            // YouTube (全般)
   "netflix.com/watch",      // Netflix (再生画面)
   "netflix.com/browse",     // Netflix (動画一覧)
@@ -10,6 +10,35 @@ const TARGET_URLS = [
 ];
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
+// 現在の監視対象リスト（メモリ上で保持）
+let targetUrls = [];
+
+// 起動時にロード
+loadSettings();
+
+// 設定が変更されたら即座に反映（再起動不要）
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes.targetUrls) {
+    targetUrls = changes.targetUrls.newValue;
+    // console.log("Target URLs updated:", targetUrls);
+  }
+});
+
+async function loadSettings() {
+  const data = await chrome.storage.local.get("targetUrls");
+  // 保存データがなければデフォルトを使う
+  if (data.targetUrls) {
+    targetUrls = data.targetUrls;
+  } else {
+    targetUrls = DEFAULT_URLS;
+    // 初回なので保存しておく
+    await chrome.storage.local.set({ targetUrls: DEFAULT_URLS });
+  }
+}
+
+// ---------------------------------------------------------
+// 計測ロジック
+// ---------------------------------------------------------
 
 let isPopupOpen = false;        // ポップアップが開いているかを管理する変数
 let lastCheckTime = Date.now(); // 前回のチェック時刻を記録しておく変数
@@ -67,8 +96,8 @@ setInterval(async () => {
     let isWatching = false;
 
     for (const tab of tabs) {
-      // ターゲットのURL（YouTube等）でなければスキップ
-      if (!tab.url || !TARGET_URLS.some(url => tab.url.includes(url))) {
+      // 読み込んだ targetUrls を使う
+      if (!tab.url || !targetUrls.some(url => tab.url.includes(url))) {
         continue;
       }
 
@@ -128,12 +157,20 @@ function updateBadge(seconds) {
   const minutes = Math.floor((seconds % 3600) / 60);
   const remSeconds = seconds % 60;
 
-  // 1. ツールチップ（マウスホバー時）には詳細な時間を表示
-  // 例: "今日の視聴時間: 1時間 23分 45秒"
-  const tooltipText = `今日の視聴時間: ${hours}時間 ${minutes}分 ${remSeconds}秒`;
+  // 1. ツールチップ（マウスホバー時）
+  // ★変更: 辞書ファイルからメッセージを取得してフォーマットする
+  // (辞書に "tooltipText" がない場合は英語でフォールバック)
+  let tooltipText = `Today: ${hours}h ${minutes}m ${remSeconds}s`;
+  try {
+    const msg = chrome.i18n.getMessage("tooltipText", [String(hours), String(minutes), String(remSeconds)]);
+    if (msg) tooltipText = msg;
+  } catch(e) {
+    // 辞書読み込みエラー時は無視
+  }
+  
   chrome.action.setTitle({ title: tooltipText });
 
-  // 2. バッジ表示（パッと見の目安）
+  // 2. バッジ表示
   let text = "";
 
   if (seconds < 60) {

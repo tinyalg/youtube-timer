@@ -19,6 +19,9 @@ mkdir "$TEMP_DIR"
 cp background.js "$TEMP_DIR/"
 cp popup.html "$TEMP_DIR/"
 cp popup.js "$TEMP_DIR/"
+cp options.html "$TEMP_DIR/"
+cp options.js "$TEMP_DIR/"
+cp -R _locales "$TEMP_DIR/"
 
 # 4. manifest_firefox.json を manifest.json という名前でコピー
 if [ -f "manifest_firefox.json" ]; then
@@ -32,10 +35,7 @@ fi
 # 5. 一時フォルダ内でZIP圧縮を実行
 # ファイルを明示的に指定するので、隠しファイルは混入しません
 cd "$TEMP_DIR"
-zip "../$OUTPUT_FILE" manifest.json background.js popup.html popup.js
+zip -r "../$OUTPUT_FILE" manifest.json background.js popup.html popup.js options.html options.js _locales
 cd ..
-
-# 6. 一時フォルダをお掃除
-rm -rf "$TEMP_DIR"
 
 echo "✅ Done! Created file: $OUTPUT_FILE"

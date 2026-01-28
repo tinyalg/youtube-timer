@@ -1,0 +1,26 @@
+{
+  "appName": { "message": "動画視聴タイマー for YouTube & Netflix" },
+  "appDesc": { "message": "YouTube、Netflix、Amazon Prime Video等の視聴時間を計測し、使いすぎを防ぎます。" },
+  
+  "historyTitle": { "message": "視聴履歴" },
+  "downloadCsv": { "message": "CSV出力" },
+  "aboutApp": { "message": "このアプリについて" },
+  
+  "settingsTitle": { "message": "監視サイト設定" },
+  "placeholderUrl": { "message": "例: hulu.jp (URLの一部)" },
+  "addBtn": { "message": "追加" },
+  "deleteBtn": { "message": "削除" },
+  "resetBtn": { "message": "初期設定に戻す" },
+  "resetConfirm": { "message": "初期設定（YouTube, Netflix, Prime）に戻しますか？" },
+  "noteAutoSave": { "message": "※ 設定は自動で保存されます。" },
+  "errorDuplicate": { "message": "そのURLは既に追加されています" },
+
+  "tooltipText": {
+    "message": "今日の視聴時間: $1時間 $2分 $3秒",
+    "placeholders": {
+      "1": { "content": "$1" },
+      "2": { "content": "$2" },
+      "3": { "content": "$3" }
+    }
+  }
+}
