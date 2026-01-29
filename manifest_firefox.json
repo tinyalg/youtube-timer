@@ -25,7 +25,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "youtube-timer-firefox-addons@tinyalg.be",
+      "id": "timer-for-youtube-and-streaming@tinyalg.be",
       "data_collection_permissions": {
         "required": [
           "none"
