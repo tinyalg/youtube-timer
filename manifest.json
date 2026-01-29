@@ -10,15 +10,21 @@
     "tabs",
     "storage"
   ],
+  "icons": {
+    "128": "icon.png"
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_title": "__MSG_appName__",
-    "default_popup": "popup.html"  
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png"
+    }
   },
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": false
+    "open_in_tab": true
   }
 }
