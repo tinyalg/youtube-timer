@@ -18,21 +18,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   const dates = Object.keys(history).sort((a, b) => new Date(b) - new Date(a));
 
   // テーブルに追加していく
-  dates.forEach(date => {
-    const seconds = history[date];
+  dates.forEach(dateKey => { // ★修正: ここを dateKey に統一
+    const seconds = history[dateKey];
     const timeStr = formatTime(seconds);
+    
+    let displayDate = dateKey;
+
+    // キー(YYYY-MM-DD)の場合のみ分解して整形する
+    // (古いデータ形式や予期せぬ形式の場合はそのまま表示してエラーを防ぐ)
+    if (dateKey.includes('-')) {
+        const parts = dateKey.split('-');
+        if (parts.length === 3) {
+            const [y, m, d] = parts;
+    const localDate = new Date(y, m - 1, d);
+            displayDate = localDate.toLocaleDateString();
+        }
+    }
 
     const row = document.createElement('tr');
     
-    // 今日の日付なら色を変えるクラスをつける
-    if (date === new Date().toLocaleDateString()) {
+    // 今日の判定
+    if (dateKey === getTodayKey()) {
       row.classList.add('today');
     }
 
     // ★変更: innerHTMLを使わず、安全な方法でセルを追加する
     // (Firefoxの審査警告 "Unsafe assignment to innerHTML" 対策)
     const dateCell = document.createElement('td');
-    dateCell.textContent = date;
+    dateCell.textContent = displayDate; 
     
     const timeCell = document.createElement('td');
     timeCell.textContent = timeStr;
@@ -44,9 +57,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // CSVダウンロード処理
   downloadBtn.addEventListener('click', () => {
-    let csvContent = "Date,Seconds,Formatted\n"; // CSVヘッダは英語共通でOK
-    dates.forEach(date => {
-      csvContent += `${date},${history[date]},${formatTime(history[date])}\n`;
+    // ここでは画面表示と同じフォーマットにします。
+    let csvContent = "Date,Seconds,Formatted\n";
+    dates.forEach(dateKey => {
+      let displayDate = dateKey;
+      // CSVでも画面と同じ日付形式にする
+      if (dateKey.includes('-')) {
+          const parts = dateKey.split('-');
+          if (parts.length === 3) {
+              const [y, m, d] = parts;
+      const localDate = new Date(y, m - 1, d);
+              displayDate = localDate.toLocaleDateString();
+          }
+      }
+      
+      csvContent += `${displayDate},${history[dateKey]},${formatTime(history[dateKey])}\n`;
     });
 
     // 2. ファイルとしてダウンロードさせる（BOM付きで文字化け防止）
@@ -76,4 +101,13 @@ function formatTime(seconds) {
   
   if (h > 0) return `${h}h ${m}m`;
   return `${m}m ${s}s`;
+}
+
+// background.jsと同じ日付キー生成関数
+function getTodayKey() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }

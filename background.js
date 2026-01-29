@@ -54,6 +54,16 @@ chrome.runtime.onConnect.addListener((port) => {
   }
 });
 
+// ★追加: 日付キー生成関数 (YYYY-MM-DD形式で統一)
+// これにより、言語設定が変わっても同じキーで保存される
+function getTodayKey() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 setInterval(async () => {
   const now = Date.now();
   const diffMs = now - lastCheckTime; 
@@ -123,7 +133,8 @@ setInterval(async () => {
     }
 
     if (isWatching) {
-        const todayStr = new Date().toLocaleDateString();
+        // 統一フォーマットを使う
+        const todayStr = getTodayKey();
         
         // ストレージから履歴全体を取得
         const data = await chrome.storage.local.get("history");
