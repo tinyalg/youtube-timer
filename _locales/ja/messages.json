@@ -1,5 +1,5 @@
 {
-  "appName": { "message": "動画視聴タイマー for YouTube & Netflix" },
+  "appName": { "message": "Watchtime Badge: YouTube・Netflix 視聴時間バッジ" },
   "appDesc": { "message": "YouTube、Netflix、Amazon Prime Video等の視聴時間を計測し、使いすぎを防ぎます。" },
   
   "historyTitle": { "message": "視聴履歴" },

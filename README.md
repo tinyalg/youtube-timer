@@ -1,4 +1,4 @@
-# Timer for YouTube & Streaming 🕒
+# Watchtime Badge: Timer for YouTube & Streaming 🕒
 
 A smart browser extension that tracks your viewing time on video streaming sites to help prevent binge-watching.
 
