@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 出力するファイル名（必要に応じて変更してください）
+# 出力するファイル名
 OUTPUT_FILE="youtube_timer_firefox.zip"
 
 # 作業用の一時フォルダ名
@@ -21,7 +21,14 @@ cp popup.html "$TEMP_DIR/"
 cp popup.js "$TEMP_DIR/"
 cp options.html "$TEMP_DIR/"
 cp options.js "$TEMP_DIR/"
-cp -R _locales "$TEMP_DIR/"
+cp icon-firefox.png "$TEMP_DIR/icon.png"
+# 多言語フォルダ (_locales) を丸ごとコピー
+# (-r オプションを使用。存在チェックを追加)
+if [ -d "_locales" ]; then
+    cp -r _locales "$TEMP_DIR/"
+else
+    echo "⚠️ Warning: _locales folder not found. i18n will not work."
+fi
 
 # 4. manifest_firefox.json を manifest.json という名前でコピー
 if [ -f "manifest_firefox.json" ]; then
@@ -33,9 +40,10 @@ else
 fi
 
 # 5. 一時フォルダ内でZIP圧縮を実行
-# ファイルを明示的に指定するので、隠しファイルは混入しません
+# "." で全ファイルを対象にしつつ、Macの隠しファイル(.DS_Store, __MACOSX) を確実に除外します
 cd "$TEMP_DIR"
-zip -r "../$OUTPUT_FILE" manifest.json background.js popup.html popup.js options.html options.js _locales
+zip -r "../$OUTPUT_FILE" . -x "*.DS_Store" -x "__MACOSX*"
 cd ..
 
 echo "✅ Done! Created file: $OUTPUT_FILE"
+echo "📂 Debug folder ready at: ./$TEMP_DIR"
