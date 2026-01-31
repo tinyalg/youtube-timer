@@ -26,13 +26,11 @@ This tool helps you regain control of your time by displaying your daily viewing
   ![Preferences Page](images/youtube-timer-preferences.png)
 
 * **Smart Tracking:**
-  It automatically stops counting when:
+  Unlike simple timers, this extension tracks time only when it matters. It counts only in the following cases:
 
-  * The video is paused or no audio is playing.
+  * **Active Viewing**: The video tab is open and active (you are looking at the page).
 
-  * You switch to another tab or window.
-
-  * Your PC goes to sleep.
+  * **Background Listening**: Audio is playing, even if you switch to another tab or window.
 
 * **History & CSV Export:**
   Click the icon to view your past viewing history in a popup. You can also download the data as a CSV file for your own analysis.
