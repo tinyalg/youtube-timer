@@ -6,14 +6,11 @@
 
 ## 📥 Install Now (Free)
 
-| Firefox | Chrome |
-| :---: | :---: |
-| [**🦊 Add to Firefox**][firefox-link] | [**⚪ Add to Chrome**][chrome-link] |
+&nbsp; &nbsp;[![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=for-the-badge&logo=firefox-browser)][firefox-link]
+&nbsp; &nbsp; &nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=for-the-badge&logo=google-chrome)][chrome-link]
 
 [firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/watchtime-badge/
 [chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm?authuser=0&hl=en
-
----
 
 ## Description
 A smart browser extension that tracks your viewing time on video streaming sites to help prevent binge-watching.
