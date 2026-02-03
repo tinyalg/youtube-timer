@@ -1,6 +1,25 @@
 // background.js
 
-// ▼▼▼ ここに監視したいURLの一部をリスト化します ▼▼▼
+// ▼▼▼ 0. ログ設定 ▼▼▼
+// ★リリース設定: 通常ログ(DEBUG)は false にして静かにする
+const DEBUG = false; 
+
+// 通常ログ（Heartbeatなど）: DEBUG=true の時だけ出る
+function log(message) {
+  if (DEBUG) {
+    const now = new Date().toLocaleString('ja-JP'); 
+    console.log(`[${now}] ${message}`);
+  }
+}
+
+// ★警告ログ（Sleep/Driftなど）: 設定に関わらず常に出す（console.warnを使用）
+// 何かあった時の調査用に、これだけは残します。
+function warn(message) {
+  const now = new Date().toLocaleString('ja-JP'); 
+  console.log(`[${now}] ${message}`);
+}
+
+// ▼▼▼ 1. 監視対象リスト ▼▼▼
 const DEFAULT_URLS = [
   "youtube.com",            // YouTube (全般)
   "netflix.com/watch",      // Netflix (再生画面)
@@ -10,17 +29,51 @@ const DEFAULT_URLS = [
 ];
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
+// アラーム(1分)より十分に長い時間を設定する
+// これにより「1分05秒」で起きた時も、ちゃんとデータを救える
+const TIME_LIMIT = 5 * 60 * 1000; // 5分
+
 // 現在の監視対象リスト（メモリ上で保持）
 let targetUrls = [];
 
-// 起動時にロード
+// 起動時の処理
 loadSettings();
+initializeAlarms(); 
 
-// 設定が変更されたら即座に反映（再起動不要）
+// ブラウザ起動時やリロード時に必ずアラームをセットし直す
+chrome.runtime.onStartup.addListener(() => {
+  log("🚀 Browser Started (onStartup event)");
+  initializeAlarms();
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  log("📦 Extension Installed/Updated");
+  initializeAlarms();
+});
+
+function initializeAlarms() {
+  chrome.alarms.get("keepAlive", (alarm) => {
+    if (!alarm) {
+      // 1分おきに発火するアラームを作成
+      chrome.alarms.create("keepAlive", { periodInMinutes: 1 });
+      log("⏰ Alarm created: keepAlive (1 min interval)");
+    }
+  });
+}
+
+// アラームが鳴った時の処理（これが「目覚まし」になる）
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "keepAlive") {
+    // ハートビートはうるさいので log (DEBUG=falseなら出ない)
+    log("💓 Heartbeat: Service Worker is awake");
+  }
+});
+
+// 設定変更の監視
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.targetUrls) {
     targetUrls = changes.targetUrls.newValue;
-    // console.log("Target URLs updated:", targetUrls);
+    log("🔧 Settings updated: Target URLs changed");
   }
 });
 
@@ -48,13 +101,15 @@ let accumulatedMs = 0;          // 端数のミリ秒を貯めておく「貯金
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name === "popup") {
     isPopupOpen = true; // 接続されたら「開いている」
+    log("👀 Popup opened");
     port.onDisconnect.addListener(() => {
       isPopupOpen = false; // 切断されたら「閉じた」
+      log("👋 Popup closed");
     });
   }
 });
 
-// ★追加: 日付キー生成関数 (YYYY-MM-DD形式で統一)
+// 日付キー生成関数 (YYYY-MM-DD形式で統一)
 // これにより、言語設定が変わっても同じキーで保存される
 function getTodayKey() {
   const now = new Date();
@@ -66,23 +121,28 @@ function getTodayKey() {
 
 setInterval(async () => {
   const now = Date.now();
-  const diffMs = now - lastCheckTime; 
-  const diffSec = Math.round(diffMs / 1000); 
-  
+  let diffMs = now - lastCheckTime;
+  const diffSec = Math.round(diffMs / 1000);
   lastCheckTime = now;
 
   // ★デバッグ用: 実際に何ミリ秒かかったかをログに出す
-  // (拡張機能の管理画面 -> ビューを検証: background page の Consoleで見れます)
+  // (拡張機能の管理画面 -> ビューを検証: background page の Consoleで確認できる)
   if (diffMs > 1100 || diffMs < 900) {
-    console.log(`Time drift detected: ${diffMs}ms (${diffSec}s)`);
+    warn(`⚠️ Time drift: ${diffMs}ms (${diffSec}s)`);
   }
 
-  // 1. スリープ対策: いきなり「60秒」以上経過していたら、それは計測ラグではなく「スリープ」とみなす
-  // その場合は、強制的に1秒(1000ms)扱いにして、寝ていた時間をチャラにする
-  const validDiffMs = (diffMs > 0 && diffMs < 60000) ? diffMs : 1000;
+  // 1. スリープ対策: いきなり5分以上経過していたら、それは計測ラグではなく「スリープ」とみなす
+  // 5分以内なら「ブラウザの遅延」とみなして足し込む
+  if (diffMs > TIME_LIMIT) {
+    // Sleep検知は warn で常に出す
+    warn(`💤 Sleep detected: ${Math.round(diffMs/1000)}s ignored.`);
+    diffMs = 1000; 
+  } else if (diffMs < 0) {
+    diffMs = 0;
+  }
 
   // 2. 経過時間を「貯金箱」に入れる
-  accumulatedMs += validDiffMs;
+  accumulatedMs += diffMs;
 
   // 3. 貯金箱に「1000ms（1秒）」以上たまっているか？
   if (accumulatedMs < 1000) {
@@ -158,8 +218,7 @@ setInterval(async () => {
     }
 
   } catch (error) {
-    // エラーが出ても止まらないように無視（あるいはコンソール出力）
-    console.log(error);
+    console.error(error);
   }
 }, 1000);
 
