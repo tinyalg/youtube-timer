@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 出力するファイル名
-OUTPUT_FILE="youtube_timer_firefox.zip"
+OUTPUT_FILE="packages/youtube_timer_firefox.zip"
 
 # 作業用の一時フォルダ名
 TEMP_DIR="temp_firefox_build"
@@ -45,5 +45,7 @@ cd "$TEMP_DIR"
 zip -r "../$OUTPUT_FILE" . -x "*.DS_Store" -x "__MACOSX*"
 cd ..
 
+# 5. 一時フォルダをお掃除
+rm -rf "$TEMP_DIR"
+
 echo "✅ Done! Created file: $OUTPUT_FILE"
-echo "📂 Debug folder ready at: ./$TEMP_DIR"
