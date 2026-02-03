@@ -1,58 +1,53 @@
-# YouTube Timer 🕒
+# Watchtime Badge: YouTube & Netflix Timer
 
-YouTube、Netflix、Amazon Prime Videoを見ている時間を自動で計測し、使いすぎを防ぐためのシンプルなブラウザ拡張機能です。
+**Track your time on YouTube, Netflix, and Prime Video to prevent binge-watching.**
 
-「気づいたら動画サイトで1日が終わっていた…」という経験はありませんか？
-このツールは、視聴時間をブラウザのツールバーにリアルタイムで表示することで、時間の感覚を取り戻す手助けをします。
+![Active Timer Badge](images/watchtime-badge-active.png)
 
-## ✨ 特徴
+## 📥 Install Now (Free)
 
-* **マルチサイト対応:** YouTube (Shorts含む), Netflix, Amazon Prime Videoに対応。
+&nbsp; &nbsp;[![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=for-the-badge&logo=firefox-browser)][firefox-link]
+&nbsp; &nbsp; &nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=for-the-badge&logo=google-chrome)][chrome-link]
 
-* **スマート計測:** 動画サイトを開いていても、別ウィンドウで作業している時やPCがスリープ中の時はカウントしません。
+[firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/watchtime-badge/
+[chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm?authuser=0&hl=en
 
-* **バッジ表示:** 今日の合計時間をアイコン上に「1:23」（1時間23分）のように表示します。
+## Description
+A smart browser extension that tracks your viewing time on video streaming sites to help prevent binge-watching.
+Ever realized you've spent the whole day watching videos?
+This tool helps you regain control of your time by displaying your daily viewing duration right on your browser toolbar in real-time.
 
-* **履歴管理:** ポップアップ画面で過去の視聴履歴を確認したり、CSVでダウンロードしたりできます。
+### Key Features
 
-* **プライバシー重視:** データはすべてあなたのPC内（ローカルストレージ）にのみ保存されます。外部サーバーへの送信は一切行いません。
+* **Real-time Badge Display:**
+  Shows today's total viewing time on the icon (e.g., "45s", "59m", "1.5h").
+  * **Active Mode (Red):** Lights up when you are watching a video.
+  * **Inactive Mode (Gray):** Dims when you are not watching or the window is in the background.
 
-## 🦊 Firefoxでのインストール
+* **Detailed Tooltip:**
+  Hover over the icon to see the exact time down to the second (e.g., "Today: 1h 23m 45s").
 
-Mozillaによる署名済みの正規アドオンとしてインストールできます。自動更新にも対応しています。
+* **Fully Customizable Sites:**
+  By default, it supports YouTube, Netflix, and Amazon Prime Video.
+  You can add any other video site you want to track via the Preferences tab!
 
-### [👉 インストールはこちら (v0.4)](https://tinyalg.github.io/youtube-timer/firefox/youtube_timer_v0.4.xpi)
+* **Smart Tracking:**
+  Tracks time only when the video tab is active or audio is playing in the background.
+  It automatically stops counting when:
+  * The video is paused or no audio is playing.
+  * Your PC goes to sleep.
 
-**手順:**
+* **History & CSV Export:**
+  Click the icon to view your past viewing history in a popup.
+  You can also download the data as a CSV file for your own analysis.
 
-1. 上記のリンクをクリックしてください。
+### Data & Privacy
 
-2. ブラウザ上部に許可を求めるバーが出たら「続行」をクリックします。
+This extension is designed with user privacy as the top priority.
 
-3. 「YouTube Timer を追加しますか？」と聞かれたら「追加」をクリックします。
+* **Local Storage Only:** All viewing records are stored locally on your device.
+* **No External Tracking:** No data is ever sent to external servers or analytics tools.
+* **Permissions:** Uses only the minimum necessary permissions.
 
-4. インストール完了です！ツールバーにアイコンが表示されます（表示されない場合はパズルピース🧩アイコンからピン留めしてください）。
-
-## 🌏 Chrome / Edgeでの使い方
-
-現在はChromeウェブストアでは公開していませんが、以下の手順で手動インストール（開発者モード）が可能です。
-
-1. [**GitHubのリポジトリページ**](https://github.com/tinyalg/youtube-timer) にアクセスします。
-
-2. ページ右上の緑色の **[Code]** ボタン > **[Download ZIP]** からソースコードをダウンロードし、解凍します。
-
-3. Chromeの拡張機能管理画面 (`chrome://extensions/`) を開きます。
-
-4. 右上の **「デベロッパーモード」** をONにします。
-
-5. **「パッケージ化されていない拡張機能を読み込む」** をクリックし、解凍したフォルダを選択します。
-
-## 🛡 データとプライバシー
-
-この拡張機能は、ユーザーのプライバシーを最優先に設計されています。
-
-* **データ保存:** 視聴記録はブラウザの `chrome.storage.local` 機能を使って、お客様の端末内にのみ保存されます。
-
-* **外部通信:** 解析ツール（Google Analytics等）や広告配信サーバーへの接続は一切行いません。
-
-* **権限:** `tabs` (URLチェック用), `storage` (データ保存用), `windows` (フォーカス判定用) の権限のみを使用します。
+---
+© Tinyalg Systems

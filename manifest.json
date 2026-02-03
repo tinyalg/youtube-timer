@@ -3,22 +3,28 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
-  "version": "0.4",
+  "version": "1.0",
   "author": "Tinyalg Systems",
-  "homepage_url": "https://tinyalg.github.io/youtube-timer/",
+  "homepage_url": "https://github.com/tinyalg/youtube-timer",
   "permissions": [
     "tabs",
     "storage"
   ],
+  "icons": {
+    "128": "icon.png"
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_title": "__MSG_appName__",
-    "default_popup": "popup.html"  
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png"
+    }
   },
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": false
+    "open_in_tab": true
   }
 }
