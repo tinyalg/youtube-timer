@@ -2,7 +2,7 @@
 
 **Track your time on YouTube, Netflix, and Prime Video to prevent binge-watching.**
 
-![Active Timer Badge](images/youtube-timer-active.png)
+![Active Timer Badge](images/watchtime-badge-active.png)
 
 ## 📥 Install Now (Free)
 
