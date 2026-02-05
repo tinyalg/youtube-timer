@@ -91,7 +91,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function localize() {
   document.getElementById('historyTitle').textContent = chrome.i18n.getMessage("historyTitle");
   document.getElementById('downloadBtn').textContent = chrome.i18n.getMessage("downloadCsv");
-  document.getElementById('aboutApp').textContent = chrome.i18n.getMessage("aboutApp");
+  
+  // リンクのテキストとURLの両方をセットする
+  const aboutLink = document.getElementById('aboutApp');
+  aboutLink.textContent = chrome.i18n.getMessage("aboutApp");
+  aboutLink.href = chrome.i18n.getMessage("appUrl");
 }
 
 function formatTime(seconds) {
