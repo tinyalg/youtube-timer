@@ -1,3 +1,5 @@
+[🇯🇵 日本語 (Japanese)](README.ja.md)  
+
 # Watchtime Badge: YouTube & Netflix Timer
 
 **Track your time on YouTube, Netflix, and Prime Video to prevent binge-watching.**
@@ -13,15 +15,16 @@
 [chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm?authuser=0&hl=en
 
 ## Description
-A smart browser extension that tracks your viewing time on video streaming sites to help prevent binge-watching.
+A smart browser extension that tracks your **actual time spent** on video streaming sites to help prevent binge-watching.
+
 Ever realized you've spent the whole day watching videos?
-This tool helps you regain control of your time by displaying your daily viewing duration right on your browser toolbar in real-time.
+This tool helps you **regain control of your attention** by displaying your daily viewing duration right on your browser toolbar in real-time.
 
 ### Key Features
 
 * **Real-time Badge Display:**
-  Shows today's total viewing time on the icon (e.g., "45s", "59m", "1.5h").
-  * **Active Mode (Red):** Lights up when you are watching a video.
+  Shows today's total time spent on the icon (e.g., "45s", "59m", "1.5h").
+  * **Active Mode (Red):** Lights up when you are engaging with the site.
   * **Inactive Mode (Gray):** Dims when you are not watching or the window is in the background.
 
 * **Detailed Tooltip:**
@@ -31,10 +34,10 @@ This tool helps you regain control of your time by displaying your daily viewing
   By default, it supports YouTube, Netflix, and Amazon Prime Video.
   You can add any other video site you want to track via the Preferences tab!
 
-* **Smart Tracking:**
-  Tracks time only when the video tab is active or audio is playing in the background.
+* **Smart Tracking (Attention-based):**
+  Tracks time not just by video playback, but by your attention. The timer counts when the video tab is active OR audio is playing.
   It automatically stops counting when:
-  * The video is paused or no audio is playing.
+  * The tab is no longer active and no audio is playing.
   * Your PC goes to sleep.
 
 * **History & CSV Export:**
