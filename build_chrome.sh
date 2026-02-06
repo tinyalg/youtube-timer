@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 出力するファイル名（必要に応じて変更してください）
-OUTPUT_FILE="youtube_timer_chrome.zip"
+OUTPUT_FILE="packages/youtube_timer_chrome.zip"
 
 # 作業用の一時フォルダ名
 TEMP_DIR="temp_chrome_build"

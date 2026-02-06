@@ -3,12 +3,13 @@
   "name": "__MSG_appName__",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
-  "version": "1.0",
+  "version": "1.0.1",
   "author": "Tinyalg Systems",
   "homepage_url": "https://github.com/tinyalg/youtube-timer",
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "alarms"
   ],
   "icons": {
     "128": "icon.png"
