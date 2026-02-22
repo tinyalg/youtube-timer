@@ -46,10 +46,38 @@ chrome.runtime.onStartup.addListener(() => {
   initializeAlarms();
 });
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   log("📦 Extension Installed/Updated");
   initializeAlarms();
+  
+  if (details.reason === "update" || details.reason === "install") {
+    await migrateData();
+  }
 });
+
+// ★追加：データ移行（マイグレーション）処理
+async function migrateData() {
+  const data = await chrome.storage.local.get(["history", "dataVersion"]);
+  let currentVersion = data.dataVersion || 1; // バージョンがない場合は1とする
+
+  // バージョン1（旧形式）からバージョン2（新形式）への移行
+  if (currentVersion === 1) {
+    console.log("🔄 Starting data migration from version 1 to 2...");
+    const newData = {};
+    
+    // 旧データが存在する場合のみ変換
+    if (data.history) {
+      for (const [dateStr, seconds] of Object.entries(data.history)) {
+        newData[`history_${dateStr}`] = seconds; // 新しいキー名に変更
+      }
+      await chrome.storage.local.remove("history"); // 古い箱は捨てる
+    }
+    
+    newData.dataVersion = 2; // バージョン2になったことを記録
+    await chrome.storage.local.set(newData);
+    console.log("✅ Data migration to version 2 completed!");
+  }
+}
 
 function initializeAlarms() {
   chrome.alarms.get("keepAlive", (alarm) => {
@@ -195,17 +223,16 @@ setInterval(async () => {
     if (isWatching) {
         // 統一フォーマットを使う
         const todayStr = getTodayKey();
+      const todayKey = `history_${todayStr}`; // 例: "history_2026-02-22"
         
-        // ストレージから履歴全体を取得
-        const data = await chrome.storage.local.get("history");
-        const history = data.history || {}; // なければ空のオブジェクト
+      // 今日のキーのみを取得
+      const data = await chrome.storage.local.get(todayKey);
         
         // 今日の分をカウントアップ (なければ0からスタート)
-        const currentSeconds = (history[todayStr] || 0) + secondsToAdd;
+        const currentSeconds = (data[todayKey] || 0) + secondsToAdd;
 
-      // 4. ストレージに保存（これが大事！）
-        history[todayStr] = currentSeconds;
-        await chrome.storage.local.set({ history: history });
+      // 今日のキーのみを上書き保存（全書き込みを廃止）
+      await chrome.storage.local.set({ [todayKey]: currentSeconds });
 
       // 5. バッジ（アイコン上の数字）を更新
       updateBadge(currentSeconds);
