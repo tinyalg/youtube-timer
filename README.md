@@ -54,5 +54,9 @@ This extension is designed with user privacy as the top priority.
 * **No External Tracking:** No data is ever sent to external servers or analytics tools.
 * **Permissions:** Uses only the minimum necessary permissions.
 
+### Updates
+  - v1.0.2: Minor performance improvements and internal data optimizations.
+  - v1.0.1: Fixed an issue where the timer would stop during long video playback.
+
 ---
 © Tinyalg Systems
