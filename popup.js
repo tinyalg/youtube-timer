@@ -10,15 +10,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   const table = document.getElementById('historyTable');
   const downloadBtn = document.getElementById('downloadBtn');
   
-  // ストレージから履歴を取得
-  const data = await chrome.storage.local.get("history");
-  const history = data.history || {};
+  // ストレージから全データを取得し、履歴データだけを抽出する
+  const allData = await chrome.storage.local.get(null);
+  const history = {};
+  
+  for (const key in allData) {
+    // "history_" で始まるキーだけを拾う
+    if (key.startsWith("history_")) {
+      const dateStr = key.replace("history_", ""); // "2026-02-22" に戻す
+      history[dateStr] = allData[key];
+    }
+  }
 
-  // 日付のリストを取得して、新しい順に並べ替え
-  const dates = Object.keys(history).sort((a, b) => new Date(b) - new Date(a));
+  // ★変更：日付文字列の降順でソート（処理が速くシンプルになります）
+  const dates = Object.keys(history).sort((a, b) => b.localeCompare(a));
 
   // テーブルに追加していく
-  dates.forEach(dateKey => { // ★修正: ここを dateKey に統一
+  dates.forEach(dateKey => {
     const seconds = history[dateKey];
     const timeStr = formatTime(seconds);
     
@@ -42,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       row.classList.add('today');
     }
 
-    // ★変更: innerHTMLを使わず、安全な方法でセルを追加する
+    // innerHTMLを使わず、安全な方法でセルを追加する
     // (Firefoxの審査警告 "Unsafe assignment to innerHTML" 対策)
     const dateCell = document.createElement('td');
     dateCell.textContent = displayDate; 
@@ -91,7 +99,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function localize() {
   document.getElementById('historyTitle').textContent = chrome.i18n.getMessage("historyTitle");
   document.getElementById('downloadBtn').textContent = chrome.i18n.getMessage("downloadCsv");
-  document.getElementById('aboutApp').textContent = chrome.i18n.getMessage("aboutApp");
+  
+  // リンクのテキストとURLの両方をセットする
+  const aboutLink = document.getElementById('aboutApp');
+  aboutLink.textContent = chrome.i18n.getMessage("aboutApp");
+  aboutLink.href = chrome.i18n.getMessage("appUrl");
 }
 
 function formatTime(seconds) {

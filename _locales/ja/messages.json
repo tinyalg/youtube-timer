@@ -4,7 +4,7 @@
   
   "historyTitle": { "message": "視聴履歴" },
   "downloadCsv": { "message": "CSV出力" },
-  "aboutApp": { "message": "このアプリについて" },
+  "aboutApp": { "message": "Watchtime Badgeについて" },
   
   "settingsTitle": { "message": "監視サイト設定" },
   "placeholderUrl": { "message": "例: hulu.jp (URLの一部)" },
@@ -22,5 +22,7 @@
       "2": { "content": "$2" },
       "3": { "content": "$3" }
     }
-  }
+  },
+
+  "appUrl": { "message": "https://tinyalg.be/ja/watchtime-badge/" }
 }

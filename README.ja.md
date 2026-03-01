@@ -8,11 +8,13 @@
 
 ## 📥 Install Now (Free)
 
-&nbsp; &nbsp;[![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=for-the-badge&logo=firefox-browser)][firefox-link]
-&nbsp; &nbsp; &nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=for-the-badge&logo=google-chrome)][chrome-link]
+&nbsp; [![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=flat-square&logo=firefox-browser&logoColor=white)][firefox-link]
+&nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=flat-square&logo=google-chrome&logoColor=white)][chrome-link]
+&nbsp; [![Edge](https://img.shields.io/badge/Edge_Add--ons-Available_Now-0078D7?style=flat-square&logo=edge&logoColor=white)][edge-link]
 
-[firefox-link]: https://addons.mozilla.org/ja/firefox/addon/watchtime-badge/
-[chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm?authuser=0&hl=ja
+[firefox-link]: https://addons.mozilla.org/firefox/addon/watchtime-badge/
+[chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm
+[edge-link]: https://microsoftedge.microsoft.com/addons/detail/iebhmcphdabmgjdbknmfdejhjckinfji
 
 ## この拡張機能について
 YouTube、Netflix、Amazon Prime Videoなどの動画サイトに費やした時間を自動で計測し、使いすぎを防ぐためのシンプルなブラウザ拡張機能です。
@@ -50,6 +52,10 @@ YouTube、Netflix、Amazon Prime Videoなどの動画サイトに費やした時
 * **データは端末内のみ:** 視聴記録はブラウザのローカルストレージ機能を使って、お使いの端末内にのみ保存されます。
 * **外部送信なし:** 解析ツール（Google Analytics等）や広告サーバーへのデータ送信は行いません。
 * **必要最小限の権限:** 動作に必要な最小限の権限のみを使用します。
+
+### 更新情報
+  - v1.0.2: 内部のデータ処理を最適化し、パフォーマンスを向上させました。
+  - v1.0.1: 長時間の動画視聴中に計測が止まってしまう問題を修正しました
 
 ---
 © Tinyalg Systems

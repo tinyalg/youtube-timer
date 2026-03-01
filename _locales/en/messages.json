@@ -4,7 +4,7 @@
   
   "historyTitle": { "message": "Watch History" },
   "downloadCsv": { "message": "Export CSV" },
-  "aboutApp": { "message": "About This App" },
+  "aboutApp": { "message": "About Watchtime Badge" },
   
   "settingsTitle": { "message": "Monitored Sites" },
   "placeholderUrl": { "message": "e.g. hulu.com (part of URL)" },
@@ -22,5 +22,7 @@
       "2": { "content": "$2" },
       "3": { "content": "$3" }
     }
-  }
+  },
+
+  "appUrl": { "message": "https://tinyalg.be/watchtime-badge/" }
 }

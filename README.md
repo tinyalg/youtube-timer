@@ -8,11 +8,13 @@
 
 ## 📥 Install Now (Free)
 
-&nbsp; &nbsp;[![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=for-the-badge&logo=firefox-browser)][firefox-link]
-&nbsp; &nbsp; &nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=for-the-badge&logo=google-chrome)][chrome-link]
+&nbsp; [![Firefox](https://img.shields.io/badge/Firefox_Add--ons-Get_It_Now-FF7139?style=flat-square&logo=firefox-browser&logoColor=white)][firefox-link]
+&nbsp; [![Chrome](https://img.shields.io/badge/Chrome_Web_Store-Available_Now-4285F4?style=flat-square&logo=google-chrome&logoColor=white)][chrome-link]
+&nbsp; [![Edge](https://img.shields.io/badge/Edge_Add--ons-Available_Now-0078D7?style=flat-square&logo=edge&logoColor=white)][edge-link]
 
-[firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/watchtime-badge/
-[chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm?authuser=0&hl=en
+[firefox-link]: https://addons.mozilla.org/firefox/addon/watchtime-badge/
+[chrome-link]: https://chromewebstore.google.com/detail/famanoajelinbeolnphfocdhihdgbffm
+[edge-link]: https://microsoftedge.microsoft.com/addons/detail/iebhmcphdabmgjdbknmfdejhjckinfji
 
 ## Description
 A smart browser extension that tracks your **actual time spent** on video streaming sites to help prevent binge-watching.
@@ -51,6 +53,10 @@ This extension is designed with user privacy as the top priority.
 * **Local Storage Only:** All viewing records are stored locally on your device.
 * **No External Tracking:** No data is ever sent to external servers or analytics tools.
 * **Permissions:** Uses only the minimum necessary permissions.
+
+### Updates
+  - v1.0.2: Minor performance improvements and internal data optimizations.
+  - v1.0.1: Fixed an issue where the timer would stop during long video playback.
 
 ---
 © Tinyalg Systems
